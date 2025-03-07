@@ -14,7 +14,7 @@ You can clone this repository using one of the following methods:
 #### a. Using Terminal (Bash, etc.)
 
 ```bash
-git clone https://github.com/HMTCITS/hmtc-frontend-2024.git
+git clone https://github.com/Tokenzrey/Boilerplate-NextJS.git
 ```
 
 #### b. Using [GitHub Desktop](https://desktop.github.com/)
