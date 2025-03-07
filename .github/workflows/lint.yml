@@ -1,0 +1,105 @@
+name: Code Quality Check
+
+on:
+  push:
+    branches:
+      - main
+  pull_request: {}
+
+concurrency:
+  group: ${{ github.job }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  code-quality:
+    name: 🧪 Code Quality
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: ⎔ Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'pnpm'
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          run_install: false
+
+      - name: 📥 Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 💅 Run Prettier Check
+        id: prettier
+        run: |
+          echo "::group::💅 Prettier Check"
+          pnpm format:check
+          echo "::endgroup::"
+
+      - name: 🔧 Run ESLint Fix
+        id: lint-fix
+        if: always()
+        run: |
+          echo "::group::🔧 ESLint Fix"
+          pnpm lint:fix
+          echo "::endgroup::"
+
+      - name: 🔍 Run TypeCheck
+        id: typecheck
+        if: always()
+        run: |
+          echo "::group::🔍 TypeScript Check"
+          pnpm typecheck
+          echo "::endgroup::"
+
+      - name: ⬣ Run ESLint Strict
+        id: lint-strict
+        if: always()
+        run: |
+          echo "::group::⬣ ESLint Strict Check"
+          pnpm lint:strict
+          echo "::endgroup::"
+
+      - name: 📋 Check Results
+        if: always()
+        run: |
+          echo "## 🧪 Code Quality Results" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "| ----- | ------ |" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ steps.prettier.outcome }}" == "success" ]; then
+            echo "| 💅 Prettier | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| 💅 Prettier | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "${{ steps.lint-fix.outcome }}" == "success" ]; then
+            echo "| 🔧 ESLint Fix | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| 🔧 ESLint Fix | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "${{ steps.typecheck.outcome }}" == "success" ]; then
+            echo "| 🔍 TypeCheck | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| 🔍 TypeCheck | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "${{ steps.lint-strict.outcome }}" == "success" ]; then
+            echo "| ⬣ ESLint Strict | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| ⬣ ESLint Strict | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: 🔄 Upload Changes (if any)
+        if: ${{ github.event_name == 'pull_request' && (steps.lint-fix.outcome == 'success' || steps.prettier.outcome == 'success') }}
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: 'style: apply automatic formatting and linting fixes'
+          commit_user_name: 'GitHub Actions'
+          commit_user_email: 'actions@github.com'
+          commit_author: 'GitHub Actions <actions@github.com>'

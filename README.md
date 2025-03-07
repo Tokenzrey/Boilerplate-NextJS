@@ -1,36 +1,156 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<!--
+Copyright (C) 2025 TOKENZREY 2025
+
+This project is licensed under the GNU General Public License v3.
+For more details, see https://www.gnu.org/licenses/gpl-3.0.en.html.
+-->
 
 ## Getting Started
 
-First, run the development server:
+### 1. Clone the Repository
+
+You can clone this repository using one of the following methods:
+
+#### a. Using Terminal (Bash, etc.)
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/HMTCITS/hmtc-frontend-2024.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+#### b. Using [GitHub Desktop](https://desktop.github.com/)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Follow the instructions on GitHub Desktop to clone the repository.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+---
 
-## Learn More
+### 2. Install Dependencies
 
-To learn more about Next.js, take a look at the following resources:
+It is highly recommended to use **pnpm** to install dependencies, as it ensures that Husky hooks and other tooling work properly.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+pnpm install
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+### 3. Run the Development Server
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Start the development server with the following command:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```bash
+pnpm dev
+```
+
+Open your browser and navigate to [http://localhost:3000](http://localhost:3000) to view the application. The main entry point is located at `src/app/page.tsx` (for App Router).
+
+Berikut dokumentasi yang lebih ringkas dan rapi mengenai struktur folder proyek:
+
+---
+
+## Folder structure
+
+This documentation explains what each folder does in the project.
+
+**`src`**  
+Contains the entire application source code.
+
+- **`app/`** → Handles routing and application pages.
+- **`components/`** → Contains reusable UI components.
+- **`constant/`** → Stores constant values used in the application.
+- **`lib/`** → Contains helper and utility functions, including authentication.
+- **`styles/`** → Stores styling and theme related files.
+- **`types/`** → Defines TypeScript types for entities in the application.
+
+---
+
+## Commit Message Convention
+
+This project follows [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/). Commit messages are enforced using Husky and commitlint to maintain consistency.
+
+### Commit Message Format
+
+```
+<type>(optional scope): <description>
+```
+
+#### Example:
+
+```
+feat(pre-event): add speakers section
+```
+
+### Available Types
+
+- **feat** → New feature or removal of a feature  
+  _Example: `feat: add table on landing page`_
+- **fix** → Bug fixes  
+  _Example: `fix: correct overflow issue in mobile view`_
+- **docs** → Documentation updates  
+  _Example: `docs: update README.md`_
+- **style** → Code style updates (formatting, import reordering, etc.) without affecting logic
+- **chore** → Dependency updates or maintenance tasks
+- **refactor** → Code refactoring without changing functionality
+- **ci** → Updates to GitHub workflows, Husky, or CI/CD configurations
+- **test** → Updates to tests or testing configurations
+- **revert** → Reverting previous commits
+- **perf** → Performance improvements
+- **vercel** → Triggering a Vercel deployment  
+  _Example: `vercel: trigger deployment`_
+
+### Additional Guidelines
+
+- **Optional Scope:**  
+  Specify a scope if needed (e.g., `feat(pre-event): add date label`). Omit if not applicable.
+- **Description:**  
+  Provide a concise yet detailed explanation of the changes.
+- **Formatting:**
+  - Use the imperative mood (e.g., `add`, not `added`).
+  - Start with a lowercase letter.
+  - Do not end with a full stop.
+- **Multiple Changes:**  
+  Commit changes separately if multiple unrelated changes are made.
+
+---
+
+## Testing and Quality Checks
+
+### TypeScript Type Checking
+
+Ensure your code is type-safe:
+
+```bash
+pnpm typecheck
+```
+
+### Linting
+
+Check your code quality with ESLint:
+
+```bash
+pnpm lint:strict
+```
+
+### Prettier
+
+Ensure consistent code formatting:
+
+```bash
+pnpm format:check
+```
+
+---
+
+## Deployment
+
+Each pull request will automatically trigger a preview deployment on Vercel. Once the pull request is closed or merged, the preview deployment is automatically removed. This enables you to test changes in a live environment before merging into the main branch.
+
+---
+
+## Resources
+
+- **Next.js Documentation:** [https://nextjs.org/docs](https://nextjs.org/docs)
+- **Tailwind CSS:** [https://tailwindcss.com](https://tailwindcss.com)
+- **pnpm:** [https://pnpm.io](https://pnpm.io)
+- **Conventional Commits:** [https://www.conventionalcommits.org](https://www.conventionalcommits.org)
+
+---
